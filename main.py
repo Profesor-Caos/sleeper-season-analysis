@@ -5,7 +5,7 @@ import pandas as pd
 from tabulate import tabulate
 
 # ----- Configuration -----
-LEAGUE_ID = "1127468541545930752"  # Replace with your Sleeper dynasty league ID
+LEAGUE_ID = "1127468541545930752"
 SEASON_YEAR = 2024
 WEEKS = 14
 
@@ -37,6 +37,7 @@ def build_weekly_tables(league_id, team_map):
     results = []
     opponent_points = {team: [0]*WEEKS for team in team_map.values()}
     matchups_by_team = {team: [] for team in team_map.values()}
+    matchups_by_week = [{} for _ in range(WEEKS)]
 
     for week in range(1, WEEKS + 1):
         matchups = get_matchups(league_id, week)
@@ -62,6 +63,8 @@ def build_weekly_tables(league_id, team_map):
                 opponent_points[team2][week-1] = pts1
                 matchups_by_team[team1].append(team2)
                 matchups_by_team[team2].append(team1)
+                matchups_by_week[week-1][team1] = team2
+                matchups_by_week[week-1][team2] = team1
             else:
                 for team, _ in matchup:
                     row_result[team] = '-'
@@ -77,30 +80,35 @@ def build_weekly_tables(league_id, team_map):
     df_sos.columns = [str(i) for i in range(1, WEEKS + 1)]
     df_sos["Total SoS"] = df_sos.sum(axis=1)
 
-    # BCS-style SOS calculation (excluding games vs team being calculated)
-    win_counts_per_team = {team: (df_results.loc[team] == 'W').sum() for team in df_results.index}
-    team_opponents = matchups_by_team
+    # BCS-style SOS calculation using normalized win percentages
+    win_counts = {team: (df_results.loc[team] == 'W').sum() for team in df_results.index}
+    loss_counts = {team: (df_results.loc[team] == 'L').sum() for team in df_results.index}
 
-    or_record = {}
-    oor_record = {}
+    or_percent = {}
+    oor_percent = {}
+    games_per_team = WEEKS
+    max_or_games = games_per_team * (games_per_team - 1)  # 14 * 13 = 182
 
-    for team in team_opponents:
-        opponents = team_opponents[team]
-        or_wins = sum([win_counts_per_team.get(opp, 0) - (1 if team in team_opponents.get(opp, []) else 0) for opp in opponents])
-        or_record[team] = or_wins
+    # Precompute each team's OR for reuse in OOR
+    team_or_raw = {}
+    for team in df_results.index:
+        opponents = matchups_by_team[team]
+        team_or_raw[team] = sum([win_counts.get(opp, 0) for opp in opponents]) - loss_counts.get(team, 0)
 
-        grand_opponents = set()
-        for opp in opponents:
-            grand_opponents.update(team_opponents.get(opp, []))
-        grand_opponents.discard(team)
-        oor_wins = sum([win_counts_per_team.get(gopp, 0) - (1 if opp in team_opponents.get(gopp, []) else 0) for gopp in grand_opponents for opp in opponents if gopp != team])
-        oor_record[team] = oor_wins
+    for team in df_results.index:
+        opponents = matchups_by_team[team]
+        or_total = team_or_raw[team]
+        or_percent[team] = or_total / max_or_games if max_or_games > 0 else 0
+
+        oor_total = sum([team_or_raw.get(opp, 0) for opp in opponents])
+        max_oor_games = WEEKS * len(opponents) * (games_per_team - 1)
+        oor_percent[team] = oor_total / max_oor_games if max_oor_games > 0 else 0
 
     df_bcs_sos = pd.DataFrame({
-        "Opponents' Wins (OR)": or_record,
-        "Opponents' Opponents' Wins (OOR)": oor_record
+        "OR Win %": or_percent,
+        "OOR Win %": oor_percent
     })
-    df_bcs_sos['BCS SOS'] = (2 * df_bcs_sos["Opponents' Wins (OR)"] + df_bcs_sos["Opponents' Opponents' Wins (OOR)"]) / 3
+    df_bcs_sos['BCS SOS'] = (2 * df_bcs_sos["OR Win %"] + df_bcs_sos["OOR Win %"]) / 3
 
     return df_points, df_results, df_sos, df_bcs_sos
 
@@ -123,8 +131,8 @@ def main():
     print("\nStrength of Schedule (Opponent Points Scored per Week):")
     print(tabulate(df_sos, headers="keys", tablefmt="pretty"))
 
-    print("\nBCS-Style Strength of Schedule:")
-    print(tabulate(df_bcs_sos, headers="keys", tablefmt="pretty"))
+    print("\nBCS-Style Strength of Schedule (Normalized Win %):")
+    print(tabulate(df_bcs_sos, headers="keys", tablefmt="pretty", floatfmt=".3f"))
 
 if __name__ == "__main__":
     main()
