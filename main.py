@@ -32,77 +32,101 @@ def build_team_lookup(users, rosters):
         team_map[team_id] = user_id_to_name.get(owner_id, f"Team {team_id}")
     return team_map
 
-def build_weekly_tables(league_id, team_map):
-    points = []
-    results = []
-    opponent_points = {team: [0]*WEEKS for team in team_map.values()}
+def build_totals(league_id, team_map):
+    team_points_for = {team: [0] * WEEKS for team in team_map.values()}
+    team_points_against = {team: [0] * WEEKS for team in team_map.values()}
+    total_points_for_by_team = {team: 0 for team in team_map.values()}
+    total_points_against_by_team = {team: 0 for team in team_map.values()}
+    match_results_by_team = {team: [] for team in team_map.values()}
     matchups_by_team = {team: [] for team in team_map.values()}
-    matchups_by_week = [{} for _ in range(WEEKS)]
 
     for week in range(1, WEEKS + 1):
         matchups = get_matchups(league_id, week)
-        week_points = {}
-        week_results = {}
-        matchup_map = {}
-
-        for m in matchups:
-            team = team_map.get(m['roster_id'], f"T{m['roster_id']}")
-            points_scored = m.get('points', 0)
-            week_points[team] = points_scored
-            matchup_id = m.get('matchup_id')
+        match_id_to_teams_involved = {}
+        
+        for team in matchups:
+            team_id = team_map.get(team['roster_id'], f"T{team['roster_id']}")
+            points_scored = team.get('points', 0)
+            team_points_for[team_id][week-1] = points_scored
+            total_points_for_by_team[team_id] += points_scored
+            matchup_id = team.get('matchup_id')
             if matchup_id is not None:
-                matchup_map.setdefault(matchup_id, []).append((team, points_scored))
-
-        row_result = {}
-        for matchup in matchup_map.values():
+                match_id_to_teams_involved.setdefault(matchup_id, []).append((team_id, points_scored))
+        
+        for matchup in match_id_to_teams_involved.values():
             if len(matchup) == 2:
                 (team1, pts1), (team2, pts2) = matchup
-                row_result[team1] = 'W' if pts1 > pts2 else 'L'
-                row_result[team2] = 'W' if pts2 > pts1 else 'L'
-                opponent_points[team1][week-1] = pts2
-                opponent_points[team2][week-1] = pts1
+                match_results_by_team[team1].append('W' if pts1 > pts2 else 'L' if pts1 < pts2 else 'D')
+                match_results_by_team[team2].append('W' if pts2 > pts1 else 'L' if pts2 < pts1 else 'D')
+                team_points_against[team1][week-1] = pts2
+                team_points_against[team2][week-1] = pts1
+                total_points_against_by_team[team1] += pts2
+                total_points_against_by_team[team2] += pts1
                 matchups_by_team[team1].append(team2)
                 matchups_by_team[team2].append(team1)
-                matchups_by_week[week-1][team1] = team2
-                matchups_by_week[week-1][team2] = team1
             else:
                 for team, _ in matchup:
-                    row_result[team] = '-'
+                    match_results_by_team[team].append('-')
 
-        points.append(week_points)
-        results.append(row_result)
+    team_records = {}
+    for team in team_map.values():
+        wins = match_results_by_team[team].count('W')
+        losses = match_results_by_team[team].count('L')
+        draws = match_results_by_team[team].count('D')
+        team_records[team] = {
+            "wins": wins,
+            "losses": losses,
+            "draws": draws
+        }
 
-    df_points = pd.DataFrame(points).fillna(0).astype(float).T
-    df_results = pd.DataFrame(results).fillna('-').T
-    df_points.columns = df_results.columns = [str(i) for i in range(1, WEEKS + 1)]
+    opponents_wins_against_other_teams = {}
+    opponents_points_against_other_teams = {}
+    for team in team_map.values():
+        opponent_wins = 0
+        total_opponent_points = 0
+        for opponent in matchups_by_team[team]:
+            opponent_wins += team_records[opponent]["wins"]
+            opponent_wins += 0.5 * team_records[opponent]["draws"]
+            total_opponent_points += total_points_for_by_team[opponent]
+        opponents_wins_against_other_teams[team] = (
+            opponent_wins # all the wins opponents had
+            - team_records[team]["losses"] # only count wins they had against other teams
+            - 0.5 * team_records[team]["draws"] # ignore draws against the team being analyzed as well
+        )
+        opponents_points_against_other_teams[team] = (
+            # ignore points against the team being analyzed when counting
+            # points scored by other teams
+            total_opponent_points - total_points_against_by_team[team]
+        )
+    
+    opponents_opponents_wins_against_other_teams = {}
+    for team in team_map.values():
+        opponents_opponent_wins = 0
+        for opponent in matchups_by_team[team]:
+            for opponents_opponent in matchups_by_team[opponent]:
+                opponents_opponent_wins += team_records[opponents_opponent]["wins"]
+                opponents_opponent_wins += 0.5 * team_records[opponents_opponent]["draws"]
+            opponents_opponent_wins = (
+                opponents_opponent_wins
+                - team_records[opponent]["losses"] # don't count wins against this opponent, we only want to know
+                - 0.5 * team_records[opponent]["draws"] # how the team is against the field
+            )
+        opponents_opponents_wins_against_other_teams[team] = opponents_opponent_wins
+    
+    return match_results_by_team, team_points_for, team_points_against, opponents_wins_against_other_teams, opponents_opponents_wins_against_other_teams, opponents_points_against_other_teams
 
-    df_sos = pd.DataFrame(opponent_points).T
-    df_sos.columns = [str(i) for i in range(1, WEEKS + 1)]
-    df_sos["Total SoS"] = df_sos.sum(axis=1)
+def build_weekly_tables(match_results_by_team, team_points_for, team_points_against, opponent_wins, opponents_opponent_wins, opponent_points):
+    df_results = pd.DataFrame(match_results_by_team).T
+    df_points_for = pd.DataFrame(team_points_for).astype(float).T
+    df_points_for.columns = df_results.columns = [str(i) for i in range(1, WEEKS + 1)]
+    df_points_against = pd.DataFrame(team_points_against).astype(float).T
+    df_points_against.columns = df_results.columns = [str(i) for i in range(1, WEEKS + 1)]
 
-    # BCS-style SOS calculation using normalized win percentages
-    win_counts = {team: (df_results.loc[team] == 'W').sum() for team in df_results.index}
-    loss_counts = {team: (df_results.loc[team] == 'L').sum() for team in df_results.index}
-
-    or_percent = {}
-    oor_percent = {}
-    games_per_team = WEEKS
-    max_or_games = games_per_team * (games_per_team - 1)  # 14 * 13 = 182
-
-    # Precompute each team's OR for reuse in OOR
-    team_or_raw = {}
+    or_percent = { team: 0 for team in df_results.index }
+    oor_percent = { team: 0 for team in df_results.index }
     for team in df_results.index:
-        opponents = matchups_by_team[team]
-        team_or_raw[team] = sum([win_counts.get(opp, 0) for opp in opponents]) - loss_counts.get(team, 0)
-
-    for team in df_results.index:
-        opponents = matchups_by_team[team]
-        or_total = team_or_raw[team]
-        or_percent[team] = or_total / max_or_games if max_or_games > 0 else 0
-
-        oor_total = sum([team_or_raw.get(opp, 0) for opp in opponents])
-        max_oor_games = WEEKS * len(opponents) * (games_per_team - 1)
-        oor_percent[team] = oor_total / max_oor_games if max_oor_games > 0 else 0
+        or_percent[team] = opponent_wins[team] / (WEEKS * (WEEKS - 1))
+        oor_percent[team] = opponents_opponent_wins[team] / (WEEKS * WEEKS * (WEEKS - 1))
 
     df_bcs_sos = pd.DataFrame({
         "OR Win %": or_percent,
@@ -110,7 +134,9 @@ def build_weekly_tables(league_id, team_map):
     })
     df_bcs_sos['BCS SOS'] = (2 * df_bcs_sos["OR Win %"] + df_bcs_sos["OOR Win %"]) / 3
 
-    return df_points, df_results, df_sos, df_bcs_sos
+    df_op_points = pd.DataFrame({"Opponents Points": opponent_points}).astype(float)
+
+    return df_results, df_points_for, df_points_against, df_bcs_sos, df_op_points
 
 # ----- Main CLI Output -----
 def main():
@@ -119,20 +145,25 @@ def main():
     rosters = get_rosters(LEAGUE_ID)
     team_map = build_team_lookup(users, rosters)
 
-    print("Building tables...")
-    df_points, df_results, df_sos, df_bcs_sos = build_weekly_tables(LEAGUE_ID, team_map)
+    match_results_by_team, team_points_for, team_points_against, opponent_wins, opponents_opponent_wins, opponent_points = build_totals(LEAGUE_ID, team_map)
 
-    print("\nPoints Scored by Team Each Week:")
-    print(tabulate(df_points, headers="keys", tablefmt="pretty"))
+    print("Building tables...")
+    df_results, df_points_for, df_points_against, df_bcs_sos, df_op_points = build_weekly_tables(match_results_by_team, team_points_for, team_points_against, opponent_wins, opponents_opponent_wins, opponent_points)
 
     print("\nWin/Loss Results by Week:")
     print(tabulate(df_results, headers="keys", tablefmt="pretty"))
 
-    print("\nStrength of Schedule (Opponent Points Scored per Week):")
-    print(tabulate(df_sos, headers="keys", tablefmt="pretty"))
+    print("\nPoints Scored by Team Each Week:")
+    print(tabulate(df_points_for, headers="keys", tablefmt="pretty"))
+    
+    print("\nPoints Scored against Team Each Week:")
+    print(tabulate(df_points_against, headers="keys", tablefmt="pretty"))
 
     print("\nBCS-Style Strength of Schedule (Normalized Win %):")
     print(tabulate(df_bcs_sos, headers="keys", tablefmt="pretty", floatfmt=".3f"))
+    
+    print("\nPoints Scored by Opponents against Other Teams:")
+    print(tabulate(df_op_points, headers="keys", tablefmt="pretty"))
 
 if __name__ == "__main__":
     main()
