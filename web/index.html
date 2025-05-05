@@ -34,29 +34,35 @@
 
     <section class="space-y-6">
         <div id="connor">
-            <h2 class="text-2xl font-semibold cursor-pointer" onclick="toggleSection(this)">🏆 - Connor - Team
-                CeeLoGreen97</h2>
-            <div class="mt-2 space-y-2 hidden">
+            <h2 class="text-2xl font-semibold">🏆 - Connor - Team CeeLoGreen97</h2>
+            <div class="mt-2 space-y-2">
                 <p>A big congratulations to @CeeLoGreen97! </p>
-                <p>13-1 in the regular season and he continued the dominance into the postseason by taking home the
-                    championship trophy. </p>
-                <p>If it's any consolation for the rest of us, this is dynasty, and Connor did draft the oldest team.
-                </p>
-                <p>Those veterans paid off big time, by scoring the most points in the league by far - with his average
-                    points scored exceeding the league average by almost 22%. </p>
-                <p>Lamar, Baker, and Saquon combined to annihilate the competition, proving the importance of
-                    Quarterbacks in this Superflex format. </p>
-                <p>His road through the regular season was also very favorable, getting to face our bottom two teams
-                    both twice (sorry Gwen and Ira). </p>
-                <p>Against other teams, his opponents on average scored 4.5% lower than the league average, a number
-                    brought down both by getting to face Gwen and Ira each twice, but also by not having to face himself
-                    (normalizing against league averages definitely makes a difference when all the other teams had
-                    Connor dropping a stupid amount of points on them). </p>
-                <p>Facing his mighty squad had his opponents shaking in their boots.</p>
-                <p>Despite his opponents scoring just 4.5% under the league average against other opponents, when
-                    against Connor, those same teams scored almost 8.6% lower than the league average, underperforming
-                    their expectations big time.</p>
-                <p>We'll see if he can repeat his ridiculous performance next year.</p>
+                <div class="hidden more-content space-y-2">
+                    <p>Conor went 13-1 in the regular season and continued the dominance into the postseason by taking
+                        home the
+                        championship trophy. </p>
+                    <p>If it's any consolation for the rest of us, this is dynasty, and Connor did draft the oldest
+                        team.
+                    </p>
+                    <p>Those veterans paid off big time, by scoring the most points in the league by far - with his
+                        average points scored exceeding the league average by almost 22%. </p>
+                    <p>Lamar, Baker, and Saquon combined to annihilate the competition, proving the importance of
+                        Quarterbacks in this Superflex format. </p>
+                    <p>His road through the regular season was also very favorable, getting to face our bottom two teams
+                        both twice (sorry Gwen and Ira). </p>
+                    <p>Against other teams, his opponents on average scored 4.5% lower than the league average, a number
+                        brought down both by getting to face Gwen and Ira each twice, but also by not having to face
+                        himself
+                        (normalizing against league averages definitely makes a difference when all the other teams had
+                        Connor dropping a stupid amount of points on them). </p>
+                    <p>Facing his mighty squad had his opponents shaking in their boots. - Despite his opponents scoring
+                        just 4.5% under the league average against other opponents, when
+                        against Connor, those same teams scored almost 8.6% lower than the league average,
+                        underperforming their expectations big time.</p>
+                    <p>We'll see if he can repeat his ridiculous performance next year.</p>
+                </div>
+
+                <button class="text-blue-600 text-sm" onclick="toggleMore(this)">Show more</button>
             </div>
         </div>
 
@@ -218,9 +224,10 @@
   </section> -->
 
     <script>
-        function toggleSection(header) {
-            const content = header.nextElementSibling;
-            content.classList.toggle('hidden');
+        function toggleMore(button) {
+            const moreContent = button.previousElementSibling;
+            moreContent.classList.toggle('hidden');
+            button.textContent = moreContent.classList.contains('hidden') ? 'Show more' : 'Hide';
         }
     </script>
 
