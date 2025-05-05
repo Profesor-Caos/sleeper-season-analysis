@@ -1,0 +1,50 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+.env
+.venv/
+venv/
+.env.*
+
+# Jupyter and cache
+.ipynb_checkpoints/
+*.sqlite3
+*.db
+*.log
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+
+# IDEs
+.vscode/
+.idea/
+
+# Test artifacts
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+
+# === Plot output / charts ===
+charts/
+*.png
+*.svg
+*.pdf
+
+# === Node/Web/Static ===
+web/node_modules/
+web/.cache/
+web/dist/
+web/.DS_Store
+
+# GitHub Pages build folder (if used)
+docs/
+
+# System
+.DS_Store
+Thumbs.db
