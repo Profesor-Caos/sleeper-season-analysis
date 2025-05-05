@@ -20,7 +20,7 @@
         <p class="text-gray-400">A look back at the season's stats and insights</p>
     </header>
 
-    <nav class="mb-6 sticky top-0 z-10 py-2 border-b border-gray-700">
+    <nav class="mb-6 sticky top-0 bg-[#1a1a1a] z-10 py-2 border-b border-gray-700">
         <h2 class="font-semibold mb-2">Jump to Team</h2>
         <ul class="flex flex-wrap gap-3 text-blue-400 text-sm">
             <li><a href="#connor">Connor</a></li>
@@ -39,10 +39,11 @@
     </nav>
 
     <section class="space-y-6">
+        <h2 class="text-2xl font-bold mt-12 mb-4">🏅 The Winner's Circle</h2>
         <div id="connor">
-            <h2 class="text-2xl font-semibold">🏆 - Connor - Team CeeLoGreen97</h2>
-            <div class="mt-2 space-y-2">
-                <p>A big congratulations to @CeeLoGreen97! </p>
+            <h3 class="text-xl font-semibold">🏆 - Connor - Team CeeLoGreen97</h3>
+            <div class="space-y-2 ml-6 mr-6 mt-2">
+                <p>A big congratulations to our champion @CeeLoGreen97! </p>
                 <div class="hidden more-content space-y-2">
                     <p>Conor went 13-1 in the regular season and continued the dominance into the postseason by taking
                         home the
@@ -73,145 +74,208 @@
         </div>
 
         <div id="ryan-w">
-            <h2 class="text-2xl font-semibold cursor-pointer" onclick="toggleSection(this)">🥈 - Ryan W - Dan Flashes
-                your Nabers</h2>
-            <div class="mt-2 space-y-2 hidden">
+            <h3 class="text-xl font-semibold">🥈 - Ryan W - Dan Flashes your Nabers</h3>
+            <div class="space-y-2 ml-6 mr-6 mt-2">
                 <p>A round of applause for our runner up! @rynoceros17 had a strong finish after a rocky 2-4 start to
-                    the season. </p>
-                <p>Making the playoffs was a close call, ending the last 4 games of the season with a scary 2 losses in
-                    a row, then finishing strong with 2 wins to clinch it. </p>
-                <p>Ryan's was another team that had a fairly lucky run into the playoffs, facing about an average
-                    strength of schedule, </p>
-                <p>but having teams underperform their expectations by about 5%, allowing a team that scored in the
-                    bottom half of the league in points for to sneak into the playoffs. </p>
-                <p>But that's not where Ryan's story ended - a couple wins in the playoffs, and he brought home silver.
-                    You never know what's going to happen in Fantasy! </p>
-                <p>Patrick Mahomes was a strong QB leader for the team, and RB De'Von Achane scored big, including in
-                    the playoffs when it mattered - </p>
-                <p>while rookies Bucky Irving and Malik Nabers shone bright.</p>
+                    the season.</p>
+                <div class="hidden more-content space-y-2">
+                    <p>Making the playoffs was a close call, ending the last 4 games of the season with a scary 2 losses
+                        in a row, then finishing strong with 2 wins to clinch it.</p>
+                    <p>Ryan's was another team that had a fairly lucky run into the playoffs, facing about an average
+                        strength of schedule, but having teams underperform their expectations by about 5%, allowing a
+                        team that scored in the bottom half of the league in points for to sneak into the playoffs.</p>
+                    <p>But that's not where Ryan's story ended - a couple wins in the playoffs, and he brought home
+                        silver. You never know what's going to happen in Fantasy! Patrick Mahomes was a strong QB leader
+                        for the team, and RB De'Von Achane scored big, including in the playoffs when it mattered -
+                        while rookies Bucky Irving and Malik Nabers shone bright.</p>
+                </div>
+                <button class="text-blue-400 text-sm" onclick="toggleMore(this)">Show more</button>
             </div>
         </div>
 
         <div id="abe">
-            <h2 class="text-2xl font-semibold cursor-pointer" onclick="toggleSection(this)">🥉 - Abe - Team
-                SgtWeenieArms</h2>
-            <div class="mt-2 space-y-2 hidden">
-                <p>And @SgtWeenieArms gets the bronze! Abe had a solid squad that scored the 3rd most points. </p>
-                <p>While his strength of schedule was fairly middling, scoring the 7th most points, against Abe, those
-                    teams
-                    outperformed by 2%, resulting in the 5th most points scored against him. </p>
-                <p>Josh Allen and Justin Herbert proved their QB talent, while Taylor Swift's boyfriend continuing to
-                    put up
-                    decent points and a mid-season trade for Drake London helped secure a playoff spot after an
-                    unfortunate 1-4
-                    start.</p>
+            <h3 class="text-xl font-semibold">🥉 - Abe - Team SgtWeenieArms</h3>
+            <div class="space-y-2 ml-6 mr-6 mt-2">
+                <p>And @SgtWeenieArms gets the bronze! Abe had a solid squad that scored the 3rd most points.</p>
+                <div class="hidden more-content space-y-2">
+                    <p>While his strength of schedule was fairly middling, scoring the 7th most points, against Abe,
+                        those teams outperformed by 2%, resulting in the 5th most points scored against him.</p>
+                    <p>Josh Allen and Justin Herbert proved their QB talent, while Taylor Swift's boyfriend continuing
+                        to put up decent points and a mid-season trade for Drake London helped secure a playoff spot
+                        after an unfortunate 1-4 start.</p>
+                </div>
+                <button class="text-blue-400 text-sm" onclick="toggleMore(this)">Show more</button>
             </div>
         </div>
 
-        <h2 class="text-2xl font-semibold">🎉 The Honorable Mentions</h2>
+        <h2 class="text-2xl font-bold mt-12 mb-4">🎉 The Honorable Mentions</h2>
 
-        <h3 class="text-xl font-semibold">Sera - Dynasty Gourmand</h3>
-        <p>@PrincessofRaven finished the regular season with the 2nd strongest record at 9-5, and taking the 4th place
-            finish in the playoffs. </p>
-        <p>Interestingly, while she had the 2nd best record, her points for during the regular season were 3rd lowest in
-            the league. </p>
-        <p>So certainly, her strength of schedule must have been a cakewalk, right? </p>
-        <p>I thought that would be the case as well, but she faced the hardest strength of schedule in the league,
-            facing both Abe and Josh twice. </p>
-        <p>Against her, teams underperformed their average performances by 8.8%, showing the incredible variance that
-            can happen in Fantasy Football. </p>
-        <p>Jalen Hurts led the effort, hindered by an injured Rashee Rice and Brandon Aiyuk, while James Conner, Aaron
-            Jones, and Courtland Sutton provided consistent points.</p>
+        <div id="sera">
+            <h3 class="text-xl font-semibold">Sera - Dynasty Gourmand</h3>
+            <div class="space-y-2 ml-6 mr-6 mt-2">
+                <p>@PrincessofRaven finished the regular season with the 2nd strongest record at 9-5, and taking the 4th
+                    place finish in the playoffs.</p>
+                <div class="hidden more-content space-y-2">
+                    <p>Interestingly, while she had the 2nd best record, her points for during the regular season were
+                        3rd lowest in the league. So certainly, her strength of schedule must have been a cakewalk,
+                        right?</p>
+                    <p>I thought that would be the case as well, but she faced the hardest strength of schedule in the
+                        league, facing both Abe and Josh twice.</p>
+                    <p>Against her, teams underperformed their average performances by 8.8%, showing the incredible
+                        variance that can happen in Fantasy Football.</p>
+                    <p>Jalen Hurts led the effort, hindered by an injured Rashee Rice and Brandon Aiyuk, while James
+                        Conner, Aaron Jones, and Courtland Sutton provided consistent points.</p>
+                </div>
+                <button class="text-blue-400 text-sm" onclick="toggleMore(this)">Show more</button>
+            </div>
+        </div>
 
-        <h3 class="text-xl font-semibold">Josh - Joshi</h3>
-        <p>@yoahiwa had a dominant regular season, scoring the 2nd most points in the league and handing Connor his only
-            loss all year. </p>
-        <p>Unfortunately for Josh, while the schedule was not overly difficult, teams overperformed and he faced the 3rd
-            most points against. </p>
-        <p>Sam Darnold was a surprising points leader for the squad, while Derick Henry and Amon-Ra St. Brown put up
-            more expected but nonetheless powerful performances.</p>
+        <div id="josh">
+            <h3 class="text-xl font-semibold">Josh - Joshi</h3>
+            <div class="space-y-2 ml-6 mr-6 mt-2">
+                <p>@yoahiwa had a dominant regular season, scoring the 2nd most points in the league and handing Connor
+                    his only loss all year.</p>
+                <div class="hidden more-content space-y-2">
+                    <p>Unfortunately for Josh, while the schedule was not overly difficult, teams overperformed and he
+                        faced the 3rd most points against.</p>
+                    <p>Sam Darnold was a surprising points leader for the squad, while Derick Henry and Amon-Ra St.
+                        Brown put up more expected but nonetheless powerful performances.</p>
+                </div>
+                <button class="text-blue-400 text-sm" onclick="toggleMore(this)">Show more</button>
+            </div>
+        </div>
 
-        <h3 class="text-xl font-semibold">Bryce - Mormen less problems</h3>
-        <p>@jazzyjackalope led an unlucky squad that scored 5th most in the league to a solid 8-6 record against the
-            most points scored by opponents. </p>
-        <p>While the strength of schedule was very average, Bryce's opponents outperformed their expected scores by over
-            9%. </p>
-        <p>Bo Nix performed well as a rookie, while Bijan Robinson, James Cook, and Jonathon Taylor were a terrific RB
-            trio. Maybe next season you should play better defense :P</p>
+        <div id="bryce">
+            <h3 class="text-xl font-semibold">Bryce - Mormen less problems</h3>
+            <div class="space-y-2 ml-6 mr-6 mt-2">
+                <p>@jazzyjackalope led an unlucky squad that scored 5th most in the league to a solid 8-6 record against
+                    the most points scored by opponents.</p>
+                <div class="hidden more-content space-y-2">
+                    <p>While the strength of schedule was very average, Bryce's opponents outperformed their expected
+                        scores by over 9%.</p>
+                    <p>Bo Nix performed well as a rookie, while Bijan Robinson, James Cook, and Jonathon Taylor were a
+                        terrific RB trio. Maybe next season you should play better defense 😛</p>
+                </div>
+                <button class="text-blue-400 text-sm" onclick="toggleMore(this)">Show more</button>
+            </div>
+        </div>
 
-        <h2 class="text-2xl font-semibold">⚖️ Those who missed the playoffs</h2>
+        <h2 class="text-2xl font-bold mt-12 mb-4">⚖️ Those who missed the playoffs</h2>
 
-        <h3 class="text-xl font-semibold">Gabe - Godo(n)t stop me</h3>
-        <p>After a blazing 6-2 start, @EmpiricalFool must have made a coaching change or something (sorry Gabe),
-            suffering heartbreaking defeat after heartbreaking defeat as the team collapsed to a 7-7 final record. </p>
-        <p>The team was among the most statistically average in the league, almost even in points for and points again,
-            with a moderately difficult strength of schedule that ended up underperforming against him. </p>
-        <p>Baker Mayfield led the team, but was traded to CeeLoGreen97 in the playoffs. Jahmyr Gibbs and Kyren Williams
-            were some of the league's top RBs. </p>
-        <p>Ladd McConkey showed a lot of promise as a young WR, and Michael Penix hopes to be a strong QB for the
-            Falcons' future.</p>
+        <div id="gabe">
+            <h3 class="text-xl font-semibold">Gabe - Godo(n)t stop me</h3>
+            <div class="space-y-2 ml-6 mr-6 mt-2">
+                <p>After a blazing 6-2 start, @EmpiricalFool must have made a coaching change or something (sorry Gabe),
+                    suffering heartbreaking defeat after heartbreaking defeat as the team collapsed to a 7-7 final
+                    record.</p>
+                <div class="hidden more-content space-y-2">
+                    <p>The team was among the most statistically average in the league, almost even in points for and
+                        points again, with a moderately difficult strength of schedule that ended up underperforming
+                        against him.</p>
+                    <p>Baker Mayfield led the team, but was traded to CeeLoGreen97 in the playoffs. Jahmyr Gibbs and
+                        Kyren Williams were some of the league's top RBs.</p>
+                    <p>Ladd McConkey showed a lot of promise as a young WR, and Michael Penix hopes to be a strong QB
+                        for the Falcons' future.</p>
+                </div>
+                <button class="text-blue-400 text-sm" onclick="toggleMore(this)">Show more</button>
+            </div>
+        </div>
 
-        <h3 class="text-xl font-semibold">Chelsea - Supermassive Black Hole</h3>
-        <p>The other team that finished 7-7, @xXTeamJacobXx similarly had a hot 5-2 start, putting up wins against some
-            of the easier teams in the league. </p>
-        <p>However, the squad faded down the stretch, losing in valiantly efforts against some of the best teams. </p>
-        <p>The team was also very statistically average, averaging just 0.0016 points per game shy of the league
-            average. </p>
-        <p>The strength of schedule was around the most average, with opponents performing about as expected. </p>
-        <p>Joe Burrow was a standout leader on the roster, and AJ Brown continued to be a reliable WR1 (Wide Receiver 1,
-            i.e. a top 12 WR). </p>
-        <p>Hopefully, Marvin Harrison lives up to his expectations in the coming season.</p>
+        <div id="chelsea">
+            <h3 class="text-xl font-semibold">Chelsea - Supermassive Black Hole</h3>
+            <div class="space-y-2 ml-6 mr-6 mt-2">
+                <p>The other team that finished 7-7, @xXTeamJacobXx similarly had a hot 5-2 start, putting up wins
+                    against some of the easier teams in the league.</p>
+                <div class="hidden more-content space-y-2">
+                    <p>However, the squad faded down the stretch, losing in valiant efforts against some of the best
+                        teams.</p>
+                    <p>The team was also very statistically average, averaging just 0.0016 points per game shy of the
+                        league average. The strength of schedule was around the most average, with opponents performing
+                        about as expected.</p>
+                    <p>Joe Burrow was a standout leader on the roster, and AJ Brown continued to be a reliable WR1 (Wide
+                        Receiver 1, i.e. a top 12 WR). Hopefully, Marvin Harrison lives up to his expectations in the
+                        coming season.</p>
+                </div>
+                <button class="text-blue-400 text-sm" onclick="toggleMore(this)">Show more</button>
+            </div>
+        </div>
 
-        <h3 class="text-xl font-semibold">Conor - The Wright Stuff</h3>
-        <p>It was a difficult season for @TwiceMarked, as what was a solid team all around that started 5-3, slid to a
-            sad 6-8 record. </p>
-        <p>It would seem the 4th highest scoring team should have done better than 6-8, but Conor fell on the wrong side
-            of variance as his points were just barely insufficient too many times. </p>
-        <p>I really should have done some margin of victory/defeat analysis too. Maybe next year. </p>
-        <p>Jared Goff, Justin Jefferson, and Kyler Murray all had good years as expected, while Terry McLaurin had a
-            career year with the best QB he's ever had throwing him the ball. </p>
-        <p>Finally, we'll see if JJ McCarthy will step up as the Vikings QB next year.</p>
+        <div id="conor">
+            <h3 class="text-xl font-semibold">Conor - The Wright Stuff</h3>
+            <div class="space-y-2 ml-6 mr-6 mt-2">
+                <p>It was a difficult season for @TwiceMarked, as what was a solid team all around that started 5-3,
+                    slid to a sad 6-8 record.</p>
+                <div class="hidden more-content space-y-2">
+                    <p>It would seem the 4th highest scoring team should have done better than 6-8, but Conor fell on
+                        the wrong side of variance as his points were just barely insufficient too many times (I really
+                        should have done some margin of victory/defeat analysis too. Maybe next year).</p>
+                    <p>Jared Goff, Justin Jefferson, and Kyler Murray all had good years as expected, while Terry
+                        McLaurin had a career year with the best QB he's ever had throwing him the ball.</p>
+                    <p>Finally, we'll see if JJ McCarthy will step up as the Vikings QB next year.</p>
+                </div>
+                <button class="text-blue-400 text-sm" onclick="toggleMore(this)">Show more</button>
+            </div>
+        </div>
 
-        <h2 class="text-2xl font-semibold">☠️ Here lies the remainder</h2>
+        <h2 class="text-2xl font-bold mt-12 mb-4">🪦 Here lies the remainder</h2>
 
-        <h3 class="text-xl font-semibold">Ryan G - Team ProfesorCaos</h3>
-        <p>At 5-9, I wasn't sure if I should consider myself a team who missed the playoffs or this category, but then I
-            recalled how my season went. </p>
-        <p>Although I finished 5-9, I started 0-4 and at one point was 2-8 - certainly outside of playoff contention.
-        </p>
-        <p>Statistically, I did score around the same range of points as teams that made or just missed the playoffs -
-            7th most points scored. </p>
-        <p>While my strength of schedule was very average, teams scored over 6.3% more than expected against me,
-            resulting in having the 2nd most points against me. </p>
-        <p>Looks like I need to learn how to play defense too. </p>
-        <p>I certainly made the most trades in the season, after Tua suffered a concussion early in the season and my RB
-            depth proved lackluster, I decided it wasn't my year. </p>
-        <p>Alas, Ja'Marr Chase's career year was wasted. Puka Nacua continued to be great when healthy, and rookie Caleb
-            Williams looked okay as Bears fans hope he becomes a top QB soon.</p>
+        <div id="ryan-g">
+            <h3 class="text-xl font-semibold">Ryan G - Team ProfesorCaos</h3>
+            <div class="space-y-2 ml-6 mr-6 mt-2">
+                <p>At 5-9, I wasn't sure if I should consider myself a team who missed the playoffs or this category,
+                    but then I recalled how my season went.</p>
+                <div class="hidden more-content space-y-2">
+                    <p>Although I finished 5-9, I started 0-4 and at one point was 2-8 - certainly outside of playoff
+                        contention.</p>
+                    <p>Statistically, I did score around the same range of points as teams that made or just missed the
+                        playoffs - 7th most points scored.</p>
+                    <p>While my strength of schedule was very average, teams scored over 6.3% more than expected against
+                        me, resulting in having the 2nd most points against me. Looks like I need to learn how to play
+                        defense too.</p>
+                    <p>I certainly made the most trades in the season, after Tua suffered a concussion early in the
+                        season and my RB depth proved lackluster, I decided it wasn't my year. Alas, Ja'Marr Chase's
+                        career year was wasted. Puka Nacua continued to be great when healthy, and rookie Caleb Williams
+                        looked okay as Bears fans hope he becomes a top QB soon.</p>
+                </div>
+                <button class="text-blue-400 text-sm" onclick="toggleMore(this)">Show more</button>
+            </div>
+        </div>
 
-        <h3 class="text-xl font-semibold">Gwen - ZZ Bottom</h3>
-        <p>A team that started out as a rebuilding squad, @dontwearsandals drafted a lot of young players, many of whom
-            hit big in their rookie season. </p>
-        <p>Don't let the 4-10 record fool you - this team should have been a lot worse than that. </p>
-        <p>Despite having the fewest points scored in the league, a favorable strength of schedule and opponents
-            underperforming by over 4.5% propelled this young band of up-and-comers to a better record than expected.
-        </p>
-        <p>But while the record was bad this year, look out for the future. </p>
-        <p>CeeDee Lamb gave veteran leadership as youngsters Jayden Daniels, Brock Bowers, and Brian Thomas Jr. all
-            exploded onto the scene. </p>
-        <p>Gwen's team can be expected to be much stronger next year.</p>
+        <div id="gwen">
+            <h3 class="text-xl font-semibold">Gwen - ZZ Bottom</h3>
+            <div class="space-y-2 ml-6 mr-6 mt-2">
+                <p>A team that started out as a rebuilding squad, @dontwearsandals drafted a lot of young players, many
+                    of whom hit big in their rookie season.</p>
+                <div class="hidden more-content space-y-2">
+                    <p>Don't let the 4-10 record fool you - this team should have been a lot worse than that.</p>
+                    <p>Despite having the fewest points scored in the league, a favorable strength of schedule and
+                        opponents underperforming by over 4.5% propelled this young band of up-and-comers to a better
+                        record than expected.</p>
+                    <p>But while the record was bad this year, look out for the future. CeeDee Lamb gave veteran
+                        leadership as youngsters Jayden Daniels, Brock Bowers, and Brian Thomas Jr. all exploded onto
+                        the scene. Gwen's team can be expected to be much stronger next year.</p>
+                </div>
+                <button class="text-blue-400 text-sm" onclick="toggleMore(this)">Show more</button>
+            </div>
+        </div>
 
-        <h3 class="text-xl font-semibold">Ira - Carradine Curtain Cords</h3>
-        <p>It was a rough season for @RustySporxxx, as his first round pick, Christian McCaffrey, missed the first half
-            of the season, and didn't even play 4 games all year. </p>
-        <p>Unfortunately, the lineup was set rather inconsistently, and a lot of potential points were left on the bench
-            throughout the year. </p>
-        <p>Ira's points for were 2nd lowest in the league, but he faced more points scored against him than Gwen,
-            granting him the bottom position on the season. </p>
-        <p>There's still a lot of promise on the roster, as Trevor Lawrence got a new WR drafted 2nd overall in this
-            year's draft, </p>
-        <p>and the young WR trio of Zay Flowers, George Pickens, and Jaxon Smith-Njigba will be good for years to come.
-        </p>
+        <div id="ira">
+            <h3 class="text-xl font-semibold">Ira - Carradine Curtain Cords</h3>
+            <div class="space-y-2 ml-6 mr-6 mt-2">
+                <p>It was a rough season for @RustySporxxx, as his first round pick, Christian McCaffrey, missed the
+                    first half of the season, and didn't even play 4 games all year.</p>
+                <div class="hidden more-content space-y-2">
+                    <p>Unfortunately, the lineup was set rather inconsistently, and a lot of potential points were left
+                        on the bench throughout the year.</p>
+                    <p>Ira's points for were 2nd lowest in the league, but he faced more points scored against him than
+                        Gwen, granting him the bottom position on the season.</p>
+                    <p>There's still a lot of promise on the roster, as Trevor Lawrence got a new WR drafted 2nd overall
+                        in this year's draft, and the young WR trio of Zay Flowers, George Pickens, and Jaxon
+                        Smith-Njigba will be good for years to come.</p>
+                </div>
+                <button class="text-blue-400 text-sm" onclick="toggleMore(this)">Show more</button>
+            </div>
+        </div>
     </section>
 
     <!-- <section class="mb-8">
