@@ -85,7 +85,7 @@ def generate_summary_tables(season_stats_by_team):
 
     sos_keys = [
         "opp win %", "opp opp win %", "win % sos", "opp_points",
-        "opp_points_normalized", "luck_factor"
+        "opp_points_normalized", "points_against_normalized", "luck_factor"
     ]
 
     key_name_mappings = {
@@ -97,14 +97,29 @@ def generate_summary_tables(season_stats_by_team):
         "points_against": "Points Against",
         "points_against_normalized": "PA Normalized",
         "opp win %": "Opponents' Win %",
-        "opp opp win %": "Opponents' Opponents' Win %",
-        "win % sos": "BCS Style Strength of Schedule",
+        "opp opp win %": "Opps' Opps' Win %",
+        "win % sos": "BCS Style SoS",
         "opp_points": "Opponents' Points",
         "opp_points_normalized": "OP Normalized",
         "luck_factor": "Luck Factor"
     }
 
     def build_table(title, keys):
+        # Compute min/max for heatmap coloring
+        min_max = {
+            k: (min(stats.get(k, 0) for stats in season_stats_by_team.values()),
+                max(stats.get(k, 0) for stats in season_stats_by_team.values()))
+            for k in keys
+        }
+
+        color_classes = [
+            "bg-red-900/40",
+            "bg-orange-700/40",
+            "bg-yellow-600/40",
+            "bg-lime-600/40",
+            "bg-green-500/40"
+        ]
+
         html = [f'<h2 class="text-xl font-bold mt-4 mb-4">{title}</h2>']
         html.append('<table class="sortable table-auto border-collapse text-sm mb-16">')
         html.append('<thead><tr><th class="border px-2 py-1 text-left">Team</th>')
@@ -116,19 +131,25 @@ def generate_summary_tables(season_stats_by_team):
             html.append(f'<tr><td class="border px-2 py-1">{team}</td>')
             for k in keys:
                 val = stats.get(k, 0)
+                num = val
                 if isinstance(val, float):
                     val = f"{val:.2f}"
-                html.append(f'<td class="border px-2 py-1">{val}</td>')
+                min_val, max_val = min_max[k]
+                norm = 0 if max_val == min_val else (num - min_val) / (max_val - min_val)
+                idx = min(int(norm * (len(color_classes) - 1)), len(color_classes) - 1)
+                bg = color_classes[idx]
+                html.append(f'<td class="border px-2 py-1 {bg}">{val}</td>')
             html.append('</tr>')
+
         html.append('</tbody></table>')
-        return '\n'.join(html)
+        return ''.join(html)
 
     html = [
         '<div class="w-screen px-4 -ml-4">',
         '<section class="overflow-x-auto px-2">'
     ]
     html.append(build_table("🧮 General Stats", general_keys))
-    html.append(build_table("📅 Schedule Stats", sos_keys))
+    html.append(build_table("📅 Strength of Schedule Stats", sos_keys))
     html.append('</section></div>')
     return ''.join(html)
 
