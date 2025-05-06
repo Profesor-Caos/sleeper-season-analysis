@@ -3,7 +3,7 @@
 import pandas as pd
 from tabulate import tabulate
 from sleeper_stats import build_team_lookup, get_all_team_matchups, get_season_stats_by_team
-from stat_outputs import generate_matchup_tables, inject_tables
+from stat_outputs import generate_matchup_tables, generate_summary_tables, inject_tables
 
 LEAGUE_ID = "1127468541545930752"
 WEEKS = 14
@@ -12,11 +12,12 @@ def main():
     print("Fetching team data...")
     team_map = build_team_lookup(LEAGUE_ID)
     matchups_by_team = get_all_team_matchups(LEAGUE_ID, team_map, WEEKS)
-
-    html = generate_matchup_tables(matchups_by_team)
-    inject_tables("web/index.html", html)
-
     season_stats = get_season_stats_by_team(matchups_by_team)
+
+    html = [generate_matchup_tables(matchups_by_team)]
+    html.append(generate_summary_tables(season_stats))
+    inject_tables("web/index.html", '\n'.join(html))
+
 
     df_stats = pd.DataFrame(season_stats).T
     df_stats = df_stats.sort_values(by="wins", ascending=False)

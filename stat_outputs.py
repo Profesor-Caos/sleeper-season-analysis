@@ -67,6 +67,7 @@ def generate_matchup_tables(matchups_by_team):
             else:
                 color = 'text-yellow-400'
         return f'<td class="border px-2 py-1 {color} {bg}">{points}</td>'
+    
     html = [
         '<div class="w-screen px-4 -ml-4">',
         '<section class="overflow-x-auto px-2">'
@@ -75,6 +76,62 @@ def generate_matchup_tables(matchups_by_team):
     html.append(build_table("📈 Weekly Points Scored", points_cell))
     html.append('</section></div>')
     return '\n'.join(html)
+
+def generate_summary_tables(season_stats_by_team):
+    general_keys = [
+        "wins", "losses", "win %", "points_for", "points_for_normalized", 
+        "points_against", "points_against_normalized"
+    ]
+
+    sos_keys = [
+        "opp win %", "opp opp win %", "win % sos", "opp_points",
+        "opp_points_normalized", "luck_factor"
+    ]
+
+    key_name_mappings = {
+        "wins": "Wins",
+        "losses": "Losses",
+        "win %": "Win %",
+        "points_for": "Points For",
+        "points_for_normalized": "PF Normalized",
+        "points_against": "Points Against",
+        "points_against_normalized": "PA Normalized",
+        "opp win %": "Opponents' Win %",
+        "opp opp win %": "Opponents' Opponents' Win %",
+        "win % sos": "BCS Style Strength of Schedule",
+        "opp_points": "Opponents' Points",
+        "opp_points_normalized": "OP Normalized",
+        "luck_factor": "Luck Factor"
+    }
+
+    def build_table(title, keys):
+        html = [f'<h2 class="text-xl font-bold mt-4 mb-4">{title}</h2>']
+        html.append('<table class="sortable table-auto border-collapse text-sm mb-16">')
+        html.append('<thead><tr><th class="border px-2 py-1 text-left">Team</th>')
+        for k in keys:
+            html.append(f'<th class="border px-2 py-1 text-left">{key_name_mappings[k]}</th>')
+        html.append('</tr></thead><tbody>')
+
+        for team, stats in season_stats_by_team.items():
+            html.append(f'<tr><td class="border px-2 py-1">{team}</td>')
+            for k in keys:
+                val = stats.get(k, 0)
+                if isinstance(val, float):
+                    val = f"{val:.2f}"
+                html.append(f'<td class="border px-2 py-1">{val}</td>')
+            html.append('</tr>')
+        html.append('</tbody></table>')
+        return '\n'.join(html)
+
+    html = [
+        '<div class="w-screen px-4 -ml-4">',
+        '<section class="overflow-x-auto px-2">'
+    ]
+    html.append(build_table("🧮 General Stats", general_keys))
+    html.append(build_table("📅 Schedule Stats", sos_keys))
+    html.append('</section></div>')
+    return ''.join(html)
+
 
 def inject_tables(index_path, table_html):
     with open(index_path, 'r', encoding='utf-8') as f:

@@ -129,12 +129,13 @@ def get_season_stats_by_team(matchups_by_team):
 
     for team in season_stats_by_team:
         stats = season_stats_by_team[team]
-        stats["points_for_normalized"] = stats["points_for"] / league_average_points
-        stats["points_against_normalized"] = stats["points_against"] / league_average_points
+        stats["points_for_normalized"] = 100 *  stats["points_for"] / league_average_points
+        stats["points_against_normalized"] = 100 * stats["points_against"] / league_average_points
         stats["opp win %"] = 100 * stats["opp_wins"] / (weeks * (weeks - 1))
         stats["opp opp win %"] = 100 * stats["opp_opp_wins"] / (weeks * weeks * (weeks - 1))
-        stats["opp_points_normalized"] = stats["opp_points"] / (league_average_points * (weeks - 1))
-        stats["opp_opp_points_normalized"] = stats["opp_opp_points"] / (league_average_points * weeks * (weeks - 1))
+        stats["win % sos"] = (2 * stats["opp win %"] + stats["opp opp win %"]) / 3
+        stats["opp_points_normalized"] = 100 * stats["opp_points"] / (league_average_points * (weeks - 1))
+        stats["opp_opp_points_normalized"] = 100 *  stats["opp_opp_points"] / (league_average_points * weeks * (weeks - 1))
         stats["luck_factor"] = stats["opp_points_normalized"] - stats["points_against_normalized"]
 
     return season_stats_by_team
