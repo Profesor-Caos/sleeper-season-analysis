@@ -24,7 +24,7 @@ def generate_matchup_tables(matchups_by_team):
 
     def build_table(title, cell_func):
         html = [f'<h2 class="text-xl font-bold mt-16 mb-4">{title}</h2>']
-        html.append('<table class="table-auto border-collapse w-full text-sm">')
+        html.append('<table class="table-auto border-collapse text-sm">')
         html.append('<thead><tr><th class="border px-2 py-1 text-left">Team</th>')
         for week in range(1, weeks + 1):
             html.append(f'<th class="border px-2 py-1">{week}</th>')
@@ -67,11 +67,13 @@ def generate_matchup_tables(matchups_by_team):
             else:
                 color = 'text-yellow-400'
         return f'<td class="border px-2 py-1 {color} {bg}">{points}</td>'
-
-    html = ['<section class="mt-16 overflow-x-auto">']
+    html = [
+        '<div class="w-screen px-4 -ml-4 md:-ml-24 lg:-ml-48 xl:-ml-64">',
+        '<section class="mt-16 overflow-x-auto px-2">'
+    ]
     html.append(build_table("📊 Weekly Win/Loss Results", wl_cell))
     html.append(build_table("📈 Weekly Points Scored", points_cell))
-    html.append('</section>')
+    html.append('</section></div>')
     return '\n'.join(html)
 
 def inject_tables(index_path, table_html):
