@@ -17,31 +17,52 @@
         }
     </style>
     <script>
-        document.querySelectorAll("table.sortable th").forEach((th, index) => {
-            th.addEventListener("click", () => {
-                const table = th.closest("table");
-                const rows = Array.from(table.querySelectorAll("tbody tr"));
-                const getValue = row => row.cells[index].innerText.trim();
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll("table.sortable").forEach((table) => {
+                const headers = table.querySelectorAll("th");
 
-                const sorted = rows.sort((a, b) => {
-                    const va = getValue(a), vb = getValue(b);
-                    const na = parseFloat(va), nb = parseFloat(vb);
-                    return isNaN(na) || isNaN(nb) ? va.localeCompare(vb) : na - nb;
+                headers.forEach((th, index) => {
+                    th.addEventListener("click", () => {
+                        const rows = Array.from(table.querySelectorAll("tbody tr"));
+                        const getValue = row => row.cells[index].innerText.trim();
+
+                        let sorted = rows.sort((a, b) => {
+                            const va = getValue(a), vb = getValue(b);
+                            const na = parseFloat(va), nb = parseFloat(vb);
+                            return isNaN(na) || isNaN(nb) ? va.localeCompare(vb) : na - nb;
+                        });
+
+                        const asc = !th.classList.contains("asc");
+
+                        // Reset all headers in this table
+                        headers.forEach(h => {
+                            h.classList.remove("asc", "desc");
+                            const icon = h.querySelector(".sort-indicator");
+                            if (icon) icon.textContent = "";
+                        });
+
+                        // Update clicked header
+                        th.classList.add(asc ? "asc" : "desc");
+                        const icon = th.querySelector(".sort-indicator");
+                        if (icon) icon.textContent = asc ? "▲" : "▼";
+
+                        if (!asc) sorted.reverse();
+
+                        // Highlight sorted column
+                        table.querySelectorAll("tbody tr").forEach(row => {
+                            row.querySelectorAll("td").forEach((td, i) => {
+                                td.classList.toggle("font-bold", i === index);
+                            });
+                        });
+
+                        sorted.forEach(row => table.querySelector("tbody").appendChild(row));
+                    });
                 });
-
-                if (th.classList.contains("asc")) {
-                    sorted.reverse();
-                    th.classList.remove("asc");
-                    th.classList.add("desc");
-                } else {
-                    th.classList.remove("desc");
-                    th.classList.add("asc");
-                }
-
-                rows.forEach(row => table.querySelector("tbody").appendChild(row));
             });
         });
     </script>
+
+
 </head>
 
 <body class="px-4 py-6 max-w-screen-md mx-auto">
@@ -536,13 +557,20 @@
                 <thead>
                     <tr>
                         <th class="border px-2 py-1 text-left">Team</th>
-                        <th class="border px-2 py-1 text-left">Wins</th>
-                        <th class="border px-2 py-1 text-left">Losses</th>
-                        <th class="border px-2 py-1 text-left">Win %</th>
-                        <th class="border px-2 py-1 text-left">Points For</th>
-                        <th class="border px-2 py-1 text-left">PF Normalized</th>
-                        <th class="border px-2 py-1 text-left">Points Against</th>
-                        <th class="border px-2 py-1 text-left">PA Normalized</th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">Wins <span
+                                class="sort-indicator"></span></th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">Losses <span
+                                class="sort-indicator"></span></th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">Win % <span
+                                class="sort-indicator"></span></th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">Points For <span
+                                class="sort-indicator"></span></th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">PF Normalized <span
+                                class="sort-indicator"></span></th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">Points Against <span
+                                class="sort-indicator"></span></th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">PA Normalized <span
+                                class="sort-indicator"></span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -673,13 +701,20 @@
                 <thead>
                     <tr>
                         <th class="border px-2 py-1 text-left">Team</th>
-                        <th class="border px-2 py-1 text-left">Opponents' Win %</th>
-                        <th class="border px-2 py-1 text-left">Opps' Opps' Win %</th>
-                        <th class="border px-2 py-1 text-left">BCS Style SoS</th>
-                        <th class="border px-2 py-1 text-left">Opponents' Points</th>
-                        <th class="border px-2 py-1 text-left">OP Normalized</th>
-                        <th class="border px-2 py-1 text-left">PA Normalized</th>
-                        <th class="border px-2 py-1 text-left">Luck Factor</th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">Opponents' Win % <span
+                                class="sort-indicator"></span></th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">Opps' Opps' Win % <span
+                                class="sort-indicator"></span></th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">BCS Style SoS <span
+                                class="sort-indicator"></span></th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">Opponents' Points <span
+                                class="sort-indicator"></span></th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">OP Normalized <span
+                                class="sort-indicator"></span></th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">PA Normalized <span
+                                class="sort-indicator"></span></th>
+                        <th class="border px-2 py-1 text-left cursor-pointer hover:underline">Luck Factor <span
+                                class="sort-indicator"></span></th>
                     </tr>
                 </thead>
                 <tbody>

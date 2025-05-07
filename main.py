@@ -1,5 +1,3 @@
-# sleeper-season-analysis/main.py
-
 import pandas as pd
 from tabulate import tabulate
 from sleeper_stats import build_team_lookup, get_all_team_matchups, get_season_stats_by_team

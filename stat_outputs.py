@@ -124,7 +124,7 @@ def generate_summary_tables(season_stats_by_team):
         html.append('<table class="sortable table-auto border-collapse text-sm mb-16">')
         html.append('<thead><tr><th class="border px-2 py-1 text-left">Team</th>')
         for k in keys:
-            html.append(f'<th class="border px-2 py-1 text-left">{key_name_mappings[k]}</th>')
+            html.append(f'<th class="border px-2 py-1 text-left cursor-pointer hover:underline">{key_name_mappings[k]} <span class="sort-indicator"></span></th>')
         html.append('</tr></thead><tbody>')
 
         for team, stats in season_stats_by_team.items():
