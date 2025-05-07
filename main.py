@@ -17,28 +17,28 @@ def main():
     inject_tables("web/index.html", '\n'.join(html))
 
 
-    df_stats = pd.DataFrame(season_stats).T
-    df_stats = df_stats.sort_values(by="wins", ascending=False)
-    # print(tabulate(df_stats, headers="keys", tablefmt="pretty", floatfmt=".2f"))
+    # df_stats = pd.DataFrame(season_stats).T
+    # df_stats = df_stats.sort_values(by="wins", ascending=False)
+    # # print(tabulate(df_stats, headers="keys", tablefmt="pretty", floatfmt=".2f"))
 
-    avg_row = df_stats.mean(numeric_only=True)
-    avg_row.name = "League Average"
-    df_stats_with_avg = pd.concat([df_stats, pd.DataFrame([avg_row])])
-    df_stats_with_avg = df_stats_with_avg.round(4)
+    # avg_row = df_stats.mean(numeric_only=True)
+    # avg_row.name = "League Average"
+    # df_stats_with_avg = pd.concat([df_stats, pd.DataFrame([avg_row])])
+    # df_stats_with_avg = df_stats_with_avg.round(4)
 
-    df_stats_with_avg.index = df_stats_with_avg.index.astype(str)
-    df_view = df_stats_with_avg[["points_for", "points_against", "opp_points", "points_for_normalized", "points_against_normalized", "opp_points_normalized", "luck_factor"]]
-    df_view = df_view.rename(columns={
-        "points_for": "Points For", 
-        "points_against": "Points Against", 
-        "opp_points": "Opponents' Points Against Other Teams", 
-        "points_for_normalized": "PF Normalized", 
-        "points_against_normalized": "PA Normalized", 
-        "opp_points_normalized": "Op Pts Normalized", 
-        "luck_factor": "Luck Factor (PA nmlzd - Op Pts nmlzd)"
-    })
-    print("\nSeason Summary:")
-    print(tabulate(df_view, headers="keys", tablefmt="pretty", floatfmt=".2f"))
+    # df_stats_with_avg.index = df_stats_with_avg.index.astype(str)
+    # df_view = df_stats_with_avg[["points_for", "points_against", "opp_points", "points_for_normalized", "points_against_normalized", "opp_points_normalized", "luck_factor"]]
+    # df_view = df_view.rename(columns={
+    #     "points_for": "Points For", 
+    #     "points_against": "Points Against", 
+    #     "opp_points": "Opponents' Points Against Other Teams", 
+    #     "points_for_normalized": "PF Normalized", 
+    #     "points_against_normalized": "PA Normalized", 
+    #     "opp_points_normalized": "Op Pts Normalized", 
+    #     "luck_factor": "Luck Factor (PA nmlzd - Op Pts nmlzd)"
+    # })
+    # print("\nSeason Summary:")
+    # print(tabulate(df_view, headers="keys", tablefmt="pretty", floatfmt=".2f"))
 
 if __name__ == "__main__":
     main()

@@ -24,7 +24,7 @@ def generate_matchup_tables(matchups_by_team):
 
     def build_table(title, cell_func):
         html = [f'<h2 class="text-xl font-bold mt-4 mb-4">{title}</h2>']
-        html.append('<table class="table-auto border-collapse text-sm mb-16">')
+        html.append('<table class="table-auto border-collapse text-sm mb-4">')
         html.append('<thead><tr><th class="border px-2 py-1 text-left">Team</th>')
         for week in range(1, weeks + 1):
             html.append(f'<th class="border px-2 py-1">{week}</th>')
@@ -73,7 +73,9 @@ def generate_matchup_tables(matchups_by_team):
         '<section class="overflow-x-auto px-2">'
     ]
     html.append(build_table("📊 Weekly Win/Loss Results", wl_cell))
+    html.append('<p class="text-sm text-gray-400 mb-16">Background colors match teams that played each other that week.</p>')
     html.append(build_table("📈 Weekly Points Scored", points_cell))
+    html.append('<p class="text-sm text-gray-400 mb-16">Background colors match teams that played each other that week.</p>')
     html.append('</section></div>')
     return '\n'.join(html)
 
@@ -121,7 +123,7 @@ def generate_summary_tables(season_stats_by_team):
         ]
 
         html = [f'<h2 class="text-xl font-bold mt-4 mb-4">{title}</h2>']
-        html.append('<table class="sortable table-auto border-collapse text-sm mb-16">')
+        html.append('<table class="sortable table-auto border-collapse text-sm mb-4">')
         html.append('<thead><tr><th class="border px-2 py-1 text-left">Team</th>')
         for k in keys:
             html.append(f'<th class="border px-2 py-1 text-left cursor-pointer hover:underline">{key_name_mappings[k]} <span class="sort-indicator"></span></th>')
@@ -149,7 +151,10 @@ def generate_summary_tables(season_stats_by_team):
         '<section class="overflow-x-auto px-2">'
     ]
     html.append(build_table("🧮 General Stats", general_keys))
+    html.append('<p class="text-sm text-gray-400 mb-16">Normalized values are percentage based relative to league averages.</p>')
     html.append(build_table("📅 Strength of Schedule Stats", sos_keys))
+    html.append('<p class="text-sm text-gray-400">Opponents\' wins and points exclude games played against the team being analyzed.</p>')
+    html.append('<p class="text-sm text-gray-400 mb-16">Luck Factor is the difference between the points scored against the team and the points opponents scored against other teams (both normalized)</p>')
     html.append('</section></div>')
     return ''.join(html)
 
