@@ -42,9 +42,6 @@ web/.cache/
 web/dist/
 web/.DS_Store
 
-# GitHub Pages build folder (if used)
-docs/
-
 # System
 .DS_Store
 Thumbs.db
